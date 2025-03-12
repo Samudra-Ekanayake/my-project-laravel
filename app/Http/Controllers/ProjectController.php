@@ -13,15 +13,26 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        
+        $projectList = Project::all();
+
+        $data = [
+            "project" => $projectList
+        ];
+
+        return view("project.index", $data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create( Project $project)
     {
-        //
+        $data = [
+            'project' => $project
+        ];
+
+        return view("project.create", $data);
     }
 
     /**
@@ -37,7 +48,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $data = [
+            'project' => $project
+        ];
+
+        return view("project.show", $data);
     }
 
     /**
@@ -45,7 +60,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $data = [
+            'project' => $project
+        ];
+
+        return view("project.edit", $data);
     }
 
     /**
@@ -53,7 +72,11 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $data = [
+            'project' => $project
+        ];
+
+        return view("project.update", $data);
     }
 
     /**
