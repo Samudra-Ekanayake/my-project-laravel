@@ -27,7 +27,7 @@
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
                     <div class="logo_laravel">
-                        <img src="{{ asset('images/photo.jpg') }}" alt="" class="rounded-circle" style="width: 60px; height: 60px;">
+                        <img src="{{ asset('images/photo.jpg') }}" alt="" class="rounded-circle border border-dark" style="width: 50px; height: 50px;">
                     </div>
                     {{-- config('app.name', 'Laravel') --}}
                 </a>
@@ -44,9 +44,15 @@
                         </li>
                     </ul> --}}
 
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav {{-- me-auto --}}">
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('/project') }}">{{ __('Progetti') }}</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav me-auto ">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url('/project/create') }}">{{ __('Aggiungi progetto') }}</a>
                         </li>
                     </ul>
 
