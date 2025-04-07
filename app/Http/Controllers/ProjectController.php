@@ -17,7 +17,7 @@ class ProjectController extends Controller
     public function index()
     {
 
-        $projectList = Project::orderBy('creation_date', 'desc')->get();
+        $projectList = Project::orderBy('creation_date', 'desc')->paginate(3);
 
         $data = [
             "project" => $projectList
@@ -51,18 +51,20 @@ class ProjectController extends Controller
             'cover_image' => 'required',
         ]);
 
-        if ($request->has('cover_image')) {
+        if ($request->hasFile('cover_image')) {
 
             $image_path = Storage::put('uploads', $request->cover_image);
             $data['cover_image'] = $image_path;
             # code...
         }
 
-        Project::create($data);
+        /* Project::create($data);
 
         $newProject = new Project();
         $newProject->fill($data);
-        $newProject->save();
+        $newProject->save(); */
+
+        $newProject = Project::create($data);
 
         return redirect()->route('project.show', $newProject->id);
     }
@@ -101,19 +103,25 @@ class ProjectController extends Controller
             'name' => 'required|min:3|max:255',
             'description' => 'required',
             'creation_date' => 'required|date',
-            'cover_image' => 'required',
+            'cover_image' => 'nullable|file|image',
         ]);
 
-        if ($request->has('cover_image')) {
+        if ($request->hasFile('cover_image')) {
 
-            $image_path = Storage::put('uploads', $request->cover_image);
-            $data['cover_image'] = $image_path;
-            # code...
+            if ($project->cover_image && !Str::startsWith($project->cover_image, 'http')) {
 
-            if ($project->cover_image && !Str::start($project->cover_image, 'http')) {
+                Storage::disk('public')->delete($project->cover_image);
 
-                Storage::delete($project->cover_image);
                 # code...
+                /* $image_path = Storage::put('uploads', 'public', $request->cover_image);
+            $data['cover_image'] = $image_path; */
+                # code...
+
+                // ✅ Salvo la nuova immagine nel disco "public" (in storage/app/public/uploads)
+                $image_path = $request->file('cover_image')->store('uploads', 'public');
+
+                // ✅ Salvo solo il path relativo, es: "uploads/nomefile.jpg"
+                $data['cover_image'] = $image_path;
             }
         }
 
@@ -146,6 +154,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->cover_image && !Str::startsWith($project->cover_image, 'http')) {
+            Storage::disk('public')->delete($project->cover_image);
+        }
+
         $project->delete();
 
         return redirect()->route('project.index');

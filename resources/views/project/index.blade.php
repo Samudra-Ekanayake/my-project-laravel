@@ -6,7 +6,7 @@
     <div class="container-fluid mt-3">
         <div class="row d-flex justify-content-around m-1 ">
             @foreach ($project as $progetti)
-                <div class="card m-3 d-flex flex-column justify-content-between" style="width: 25rem; height: 28rem;">
+                <div class="card m-3 d-flex flex-column justify-content-between" style="width: 25rem; height: 25rem;">
 
                     @if (Str::startswith($progetti->cover_image, 'http'))
                         <img src="{{ $progetti->cover_image }}" class="card-img-top" alt="...">
@@ -72,6 +72,7 @@
                     </div>
                 </div>
             @endforeach
+            {{ $project->links('pagination::bootstrap-5') }}
         </div>
     </div>
 @endsection
