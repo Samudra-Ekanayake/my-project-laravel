@@ -17,7 +17,7 @@ class ProjectController extends Controller
     public function index()
     {
 
-        $projectList = Project::orderBy('creation_date', 'desc')->paginate(3);
+        $projectList = Project::orderBy('creation_date',)->paginate(8);
 
         $data = [
             "project" => $projectList
@@ -143,7 +143,7 @@ class ProjectController extends Controller
             // Laravel crea un link simbolico con `php artisan storage:link`
             $data['cover_image'] = '/storage/' . $image_path;
         }
- */
+        */
         $project->update($data);
 
         return redirect()->route('project.show', $project);
